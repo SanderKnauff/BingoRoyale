@@ -1,8 +1,11 @@
-package ooo.sansk.bingoroyale.objective;
+package ooo.sansk.bingoroyale.objective.implementation;
 
+import ooo.sansk.bingoroyale.objective.BingoObjective;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.CraftItemEvent;
+
+import java.util.Objects;
 
 public class CraftItemObjective extends BingoObjective<CraftItemEvent> {
 
@@ -10,11 +13,11 @@ public class CraftItemObjective extends BingoObjective<CraftItemEvent> {
     private final int amountRequired;
     private int count;
 
-    public CraftItemObjective(Player player, Material itemType, int amountRequired, int count) {
+    public CraftItemObjective(Player player, Material itemType, int amountRequired) {
         super(player);
         this.itemType = itemType;
         this.amountRequired = amountRequired;
-        this.count = count;
+        this.count = 0;
     }
 
     @Override
@@ -53,5 +56,19 @@ public class CraftItemObjective extends BingoObjective<CraftItemEvent> {
                 this.count,
                 isCompleted() ? "&a" : "&c",
                 this.amountRequired);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        CraftItemObjective that = (CraftItemObjective) o;
+        return amountRequired == that.amountRequired &&
+                itemType == that.itemType;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(itemType, amountRequired);
     }
 }

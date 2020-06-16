@@ -1,7 +1,10 @@
-package ooo.sansk.bingoroyale.objective;
+package ooo.sansk.bingoroyale.objective.implementation;
 
+import ooo.sansk.bingoroyale.objective.BingoObjective;
 import org.bukkit.entity.Player;
 import org.bukkit.event.world.PortalCreateEvent;
+
+import java.util.Objects;
 
 public class NetherPortalBuildObjective extends BingoObjective<PortalCreateEvent> {
 
@@ -25,5 +28,18 @@ public class NetherPortalBuildObjective extends BingoObjective<PortalCreateEvent
     @Override
     public String getDescription() {
         return "&7Build and light a &5Nether Portal";
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        NetherPortalBuildObjective that = (NetherPortalBuildObjective) o;
+        return getPlayer().equals(that.getPlayer());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getPlayer());
     }
 }

@@ -1,8 +1,11 @@
-package ooo.sansk.bingoroyale.objective;
+package ooo.sansk.bingoroyale.objective.implementation;
 
+import ooo.sansk.bingoroyale.objective.BingoObjective;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.event.entity.EntityDeathEvent;
+
+import java.util.Objects;
 
 public class KillEntityTypeObjective extends BingoObjective<EntityDeathEvent> {
 
@@ -54,5 +57,19 @@ public class KillEntityTypeObjective extends BingoObjective<EntityDeathEvent> {
                 this.count,
                 isCompleted() ? "&a" : "&c",
                 this.amountRequired);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        KillEntityTypeObjective that = (KillEntityTypeObjective) o;
+        return amountRequired == that.amountRequired &&
+                entityType == that.entityType;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(entityType, amountRequired);
     }
 }
