@@ -3,6 +3,7 @@ package ooo.sansk.bingoroyale;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.plugin.java.annotation.command.Command;
 import org.bukkit.plugin.java.annotation.command.Commands;
+import org.bukkit.plugin.java.annotation.plugin.ApiVersion;
 import org.bukkit.plugin.java.annotation.plugin.Plugin;
 
 import java.util.Objects;
@@ -11,6 +12,7 @@ import java.util.Objects;
 @Commands(value = {
         @Command(name = "startgame")
 })
+@ApiVersion(ApiVersion.Target.v1_13)
 public class BingoRoyalePlugin extends JavaPlugin {
 
     private BingoRoyaleMinigame bingoRoyaleMinigame;

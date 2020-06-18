@@ -2,39 +2,44 @@ package ooo.sansk.bingoroyale.objective.implementation;
 
 import ooo.sansk.bingoroyale.objective.BingoObjective;
 import org.bukkit.entity.Player;
-import org.bukkit.event.world.PortalCreateEvent;
+import org.bukkit.event.player.PlayerPortalEvent;
 
 import java.util.Objects;
 
-public class NetherPortalBuildObjective extends BingoObjective<PortalCreateEvent> {
+public class NetherPortalEnterObjective extends BingoObjective<PlayerPortalEvent> {
 
-    public NetherPortalBuildObjective(Player player) {
+    public NetherPortalEnterObjective(Player player) {
         super(player);
     }
 
     @Override
-    public Class<PortalCreateEvent> getListenerType() {
-        return PortalCreateEvent.class;
+    public Class<PlayerPortalEvent> getListenerType() {
+        return PlayerPortalEvent.class;
     }
 
     @Override
-    public void checkCompleted(PortalCreateEvent portalCreateEvent) {
-        if (!getPlayer().equals(portalCreateEvent.getEntity())) {
+    public void checkCompleted(PlayerPortalEvent event) {
+        if (!getPlayer().equals(event.getPlayer())) {
             return;
         }
         setCompleted(true);
     }
 
     @Override
+    public String getName() {
+        return "Create Nether Portal";
+    }
+
+    @Override
     public String getDescription() {
-        return "&7Build and light a &5Nether Portal";
+        return "§7Enter a §5Nether Portal";
     }
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        NetherPortalBuildObjective that = (NetherPortalBuildObjective) o;
+        NetherPortalEnterObjective that = (NetherPortalEnterObjective) o;
         return getPlayer().equals(that.getPlayer());
     }
 

@@ -26,6 +26,9 @@ public class SleepInBedObjective extends BingoObjective<PlayerBedEnterEvent> {
         if (!getPlayer().equals(event.getPlayer())) {
             return;
         }
+        if(!event.getBedEnterResult().equals(PlayerBedEnterEvent.BedEnterResult.OK)) {
+            return;
+        }
         if (bedType != null && !bedType.equals(event.getBed().getType())) {
             return;
         }
@@ -33,8 +36,13 @@ public class SleepInBedObjective extends BingoObjective<PlayerBedEnterEvent> {
     }
 
     @Override
+    public String getName() {
+        return "Sleep in a bed";
+    }
+
+    @Override
     public String getDescription() {
-        return String.format("&7Sleep in a %sbed",
+        return String.format("§7Sleep in a %sbed",
                 bedType != null ? createReadableBedName() + " " : "");
     }
 

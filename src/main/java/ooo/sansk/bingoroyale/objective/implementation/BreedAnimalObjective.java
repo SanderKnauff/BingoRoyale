@@ -1,6 +1,7 @@
 package ooo.sansk.bingoroyale.objective.implementation;
 
 import ooo.sansk.bingoroyale.objective.BingoObjective;
+import ooo.sansk.bingoroyale.util.TextFormatter;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.event.entity.EntityBreedEvent;
@@ -33,8 +34,13 @@ public class BreedAnimalObjective extends BingoObjective<EntityBreedEvent> {
     }
 
     @Override
+    public String getName() {
+        return "Breed " + TextFormatter.enumNameToFancyString(entityType.name()) + "s";
+    }
+
+    @Override
     public String getDescription() {
-        return "&7Breed a baby &c" + entityType.name();
+        return "§7Breed a baby §c" + TextFormatter.enumNameToFancyString(entityType.name());
     }
 
     @Override

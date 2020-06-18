@@ -7,7 +7,7 @@ public enum  ObjectiveType {
     BREED(new BreedAnimalObjectiveFactory()),
     CRAFT(new CraftItemObjectiveFactory()),
     KILL(new KillEntityTypeObjectiveFactory()),
-    PORTAL(new NetherPortalBuildObjectiveFactory()),
+    PORTAL(new NetherPortalEnterObjectiveFactory()),
     SLEEP(new SleepInBedObjectiveFactory());
 
     private final ObjectiveFactory factory;
