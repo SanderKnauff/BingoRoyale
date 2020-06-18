@@ -4,31 +4,39 @@ import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.ChatMessageType;
 import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.Bukkit;
+import org.bukkit.Material;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
+import org.bukkit.inventory.ItemFlag;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 
+import java.util.Collections;
 import java.util.Objects;
+import java.util.UUID;
 
 public abstract class BingoObjective<T extends Event> {
 
-    private final Player player;
+    private final UUID player;
+    private final Material icon;
     private boolean completed;
 
-    public BingoObjective(Player player) {
-        this.player = player;
+    public BingoObjective(Player player, Material icon) {
+        this.player = player.getUniqueId();
+        this.icon = icon;
         this.completed = false;
     }
 
     public Player getPlayer() {
-        return player;
+        return Bukkit.getPlayer(player);
     }
 
     public boolean isCompleted() {
         return completed;
     }
 
-    protected void setCompleted(boolean completed) {
+    public void setCompleted(boolean completed) {
         this.completed = completed;
         if (completed) {
             notifyCompletion();
@@ -36,10 +44,10 @@ public abstract class BingoObjective<T extends Event> {
     }
 
     private void notifyCompletion() {
-        player.playSound(player.getLocation(), Sound.UI_TOAST_CHALLENGE_COMPLETE, 0.5f, 1.5f);
-        player.sendTitle(ChatColor.GOLD + "Objective Complete!", getDescription(), 10, 70, 20);
+        getPlayer().playSound(getPlayer().getLocation(), Sound.UI_TOAST_CHALLENGE_COMPLETE, 0.5f, 1.5f);
+        getPlayer().sendTitle(ChatColor.GOLD + "Objective Complete!", getDescription(), 10, 70, 20);
         for (Player onlinePlayer : Bukkit.getServer().getOnlinePlayers()) {
-            onlinePlayer.spigot().sendMessage(ChatMessageType.ACTION_BAR, TextComponent.fromLegacyText(ChatColor.AQUA + player.getName() + ChatColor.GOLD + " has completed the objective " + ChatColor.BOLD + ChatColor.GREEN + getName()));
+            onlinePlayer.spigot().sendMessage(ChatMessageType.ACTION_BAR, TextComponent.fromLegacyText(ChatColor.AQUA + getPlayer().getName() + ChatColor.GOLD + " has completed the objective " + ChatColor.BOLD + ChatColor.GREEN + getName()));
         }
     }
 
@@ -50,6 +58,18 @@ public abstract class BingoObjective<T extends Event> {
     public abstract String getDescription();
 
     public abstract String getName();
+
+    public ItemStack getItemRepresentation() {
+        ItemStack representation = new ItemStack(isCompleted() ? Material.LIME_WOOL : icon, 1);
+        ItemMeta itemMeta = representation.getItemMeta();
+        if(itemMeta != null) {
+            itemMeta.setDisplayName(ChatColor.GOLD + getName());
+            itemMeta.setLore(Collections.singletonList((isCompleted() ? "§8[§aCOMPLETED§8] " : "") + getDescription()));
+            itemMeta.addItemFlags(ItemFlag.HIDE_ATTRIBUTES);
+            representation.setItemMeta(itemMeta);
+        }
+        return representation;
+    }
 
     @Override
     public boolean equals(Object o) {

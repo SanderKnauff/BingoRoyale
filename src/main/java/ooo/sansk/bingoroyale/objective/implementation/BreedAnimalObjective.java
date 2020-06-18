@@ -2,6 +2,7 @@ package ooo.sansk.bingoroyale.objective.implementation;
 
 import ooo.sansk.bingoroyale.objective.BingoObjective;
 import ooo.sansk.bingoroyale.util.TextFormatter;
+import org.bukkit.Material;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.event.entity.EntityBreedEvent;
@@ -13,7 +14,7 @@ public class BreedAnimalObjective extends BingoObjective<EntityBreedEvent> {
     private final EntityType entityType;
 
     public BreedAnimalObjective(Player player, EntityType entityType) {
-        super(player);
+        super(player, Material.WHEAT);
         this.entityType = entityType;
     }
 

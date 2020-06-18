@@ -21,7 +21,7 @@ public class CraftItemObjective extends BingoObjective<CraftItemEvent> {
     private int count;
 
     public CraftItemObjective(Player player, Material itemType, int amountRequired) {
-        super(player);
+        super(player, Material.CRAFTING_TABLE);
         this.itemType = itemType;
         this.amountRequired = amountRequired;
         this.count = 0;
@@ -49,7 +49,7 @@ public class CraftItemObjective extends BingoObjective<CraftItemEvent> {
     }
 
     @Override
-    protected void setCompleted(boolean completed) {
+    public void setCompleted(boolean completed) {
         super.setCompleted(completed);
         if(!completed) {
             this.count = 0;

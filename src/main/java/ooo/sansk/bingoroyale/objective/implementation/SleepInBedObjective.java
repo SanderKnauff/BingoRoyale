@@ -1,6 +1,7 @@
 package ooo.sansk.bingoroyale.objective.implementation;
 
 import ooo.sansk.bingoroyale.objective.BingoObjective;
+import ooo.sansk.bingoroyale.util.TextFormatter;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.player.PlayerBedEnterEvent;
@@ -12,7 +13,7 @@ public class SleepInBedObjective extends BingoObjective<PlayerBedEnterEvent> {
     private final Material bedType;
 
     public SleepInBedObjective(Player player, Material bedType) {
-        super(player);
+        super(player, bedType != null ? bedType : Material.RED_BED);
         this.bedType = bedType;
     }
 
@@ -42,12 +43,8 @@ public class SleepInBedObjective extends BingoObjective<PlayerBedEnterEvent> {
 
     @Override
     public String getDescription() {
-        return String.format("§7Sleep in a %sbed",
-                bedType != null ? createReadableBedName() + " " : "");
-    }
-
-    private String createReadableBedName() {
-        return bedType.name().toLowerCase().replace("BED", "").replace("_", " ");
+        return String.format("§7Sleep in a §c%s",
+                bedType != null ? TextFormatter.enumNameToFancyString(bedType.name()) : "Bed");
     }
 
     @Override

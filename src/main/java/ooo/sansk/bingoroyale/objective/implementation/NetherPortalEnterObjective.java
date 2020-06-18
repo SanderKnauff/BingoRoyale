@@ -1,6 +1,7 @@
 package ooo.sansk.bingoroyale.objective.implementation;
 
 import ooo.sansk.bingoroyale.objective.BingoObjective;
+import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.player.PlayerPortalEvent;
 
@@ -9,7 +10,7 @@ import java.util.Objects;
 public class NetherPortalEnterObjective extends BingoObjective<PlayerPortalEvent> {
 
     public NetherPortalEnterObjective(Player player) {
-        super(player);
+        super(player, Material.OBSIDIAN);
     }
 
     @Override

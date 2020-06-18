@@ -1,10 +1,11 @@
 package ooo.sansk.bingoroyale;
 
-import ooo.sansk.bingoroyale.objective.BingoObjective;
 import org.bukkit.*;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
 import org.bukkit.event.player.PlayerTeleportEvent;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.plugin.Plugin;
 
 import java.io.File;
@@ -16,41 +17,74 @@ import java.nio.file.Path;
 import java.nio.file.attribute.BasicFileAttributes;
 import java.time.Instant;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 
 public class BingoRoyaleMinigame {
 
     public static final String WORLD_NAME = "BingoWorld";
-    private static final int ITEMS_PER_LINE = 2;
+    private static final int ITEMS_PER_LINE = 5;
     private static final int WORLD_SIZE = 1000;
 
     private final Plugin plugin;
     private final List<BingoCard> bingoCards;
+    private final long seed;
 
+    private boolean gameActive;
     private World world;
 
     public BingoRoyaleMinigame(Plugin plugin) {
         this.plugin = plugin;
         this.bingoCards = new LinkedList<>();
+        this.seed = Instant.now().toEpochMilli();
+        this.gameActive = false;
+    }
+
+    public boolean isGameActive() {
+        return gameActive;
+    }
+
+    public boolean isPlayerInGame(Player player) {
+        return bingoCards.stream()
+                .anyMatch(card -> card.getOwner().equals(player));
     }
 
     public void startGame() {
+        this.gameActive = true;
         List<Player> playerList = new ArrayList<>(Bukkit.getOnlinePlayers());
-        long seed = Instant.now().toEpochMilli();
         for (int i = 0; i < playerList.size(); i++) {
-            Player player = playerList.get(i);
-            Location location = calculateSpawnLocationInCircle(i, playerList.size());
-            player.teleport(location, PlayerTeleportEvent.TeleportCause.PLUGIN);
-            plugin.getLogger().info(() -> "Teleported " + player.getName() + " to " + location);
-            player.setGameMode(GameMode.SURVIVAL);
-            BingoCard bingoCard = createBingoCard(player, seed);
-            bingoCards.add(bingoCard);
-            player.sendMessage("Complete the following objectives:");
-            for (BingoObjective<Event>[] bingoObjectives : bingoCard.getTable()) {
-                for (BingoObjective<Event> bingoObjective : bingoObjectives) {
-                    player.sendMessage(bingoObjective.getDescription());
-                }
+            spawnPlayerInArena(playerList.get(i), i);
+        }
+    }
+
+    public void spawnPlayerInArena(Player player, int i) {
+        Location location = calculateSpawnLocationInCircle(i, Bukkit.getOnlinePlayers().size());
+        player.teleport(location, PlayerTeleportEvent.TeleportCause.PLUGIN);
+        plugin.getLogger().info(() -> "Teleported " + player.getName() + " to " + location);
+        player.setGameMode(GameMode.SURVIVAL);
+        BingoCard bingoCard = createBingoCard(player, seed);
+        bingoCards.add(bingoCard);
+        player.sendMessage("Complete the following objectives:");
+        bingoCard.displayCard(player);
+        ItemStack card = new ItemStack(Material.PAPER, 1);
+        ItemMeta itemMeta = card.getItemMeta();
+        itemMeta.setDisplayName("" + ChatColor.RESET + ChatColor.GOLD + "Bingo Card");
+        itemMeta.setLore(Collections.singletonList("" + ChatColor.BOLD + ChatColor.RED + "Right-click me to open your card!"));
+        card.setItemMeta(itemMeta);
+        player.getInventory().addItem(card);
+    }
+
+    public void stopGame() {
+        bingoCards.clear();
+        Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, Bukkit::shutdown, 200);
+    }
+
+    public void openCard(Player player) {
+        for (BingoCard bingoCard : bingoCards) {
+            if(bingoCard.getOwner().equals(player)) {
+                bingoCard.displayCard(player);
+                return;
             }
         }
     }
@@ -58,7 +92,10 @@ public class BingoRoyaleMinigame {
     public void handleEvent(Event event) {
         for (BingoCard bingoCard : bingoCards) {
             if (bingoCard.checkObjectiveCompleted(event) && bingoCard.checkCompletion()) {
-                Bukkit.getServer().broadcastMessage(bingoCard.getOwner().getName() + " completed their card!");
+                Bukkit.getOnlinePlayers().forEach(player -> {
+                    player.sendTitle(ChatColor.AQUA + bingoCard.getOwner().getName() + ChatColor.GOLD + " has completed their card!", "", 10, 210, 20);
+                });
+                stopGame();
                 return;
             }
         }
@@ -106,7 +143,10 @@ public class BingoRoyaleMinigame {
 
     public void removeWorld() {
         if (world != null) {
-            Bukkit.getServer().unloadWorld(world, false);
+            boolean worldUnloadSuccess = Bukkit.getServer().unloadWorld(world, false);
+            if(!worldUnloadSuccess) {
+                plugin.getLogger().warning("Failed to remove world");
+            }
         }
         File worldContainerFolder = Bukkit.getWorldContainer();
         File worldFolder = new File(worldContainerFolder, WORLD_NAME);

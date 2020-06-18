@@ -4,6 +4,7 @@ import net.md_5.bungee.api.ChatMessageType;
 import net.md_5.bungee.api.chat.TextComponent;
 import ooo.sansk.bingoroyale.objective.BingoObjective;
 import ooo.sansk.bingoroyale.util.TextFormatter;
+import org.bukkit.Material;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.event.entity.EntityDeathEvent;
@@ -17,7 +18,7 @@ public class KillEntityTypeObjective extends BingoObjective<EntityDeathEvent> {
     private int count;
 
     public KillEntityTypeObjective(Player player, EntityType entityType, int amountRequired) {
-        super(player);
+        super(player, Material.WOODEN_SWORD);
         this.entityType = entityType;
         this.amountRequired = amountRequired;
         this.count = 0;
@@ -29,7 +30,7 @@ public class KillEntityTypeObjective extends BingoObjective<EntityDeathEvent> {
     }
 
     @Override
-    protected void setCompleted(boolean completed) {
+    public void setCompleted(boolean completed) {
         super.setCompleted(completed);
         if(!completed) {
             this.count = 0;
@@ -59,8 +60,7 @@ public class KillEntityTypeObjective extends BingoObjective<EntityDeathEvent> {
 
     @Override
     public String getDescription() {
-        return String.format("%s§7Kill §c%d %s%s §8(%s%d§7/%s%d§8)",
-                isCompleted() ? "§8[§aCOMPLETED§8] " : "",
+        return String.format("§7Kill §c%d %s%s §8(%s%d§7/%s%d§8)",
                 this.amountRequired,
                 TextFormatter.enumNameToFancyString(this.entityType.name()),
                 this.amountRequired == 1 ? "" : "s",

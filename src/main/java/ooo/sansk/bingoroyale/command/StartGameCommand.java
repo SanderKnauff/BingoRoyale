@@ -1,6 +1,7 @@
-package ooo.sansk.bingoroyale;
+package ooo.sansk.bingoroyale.command;
 
 
+import ooo.sansk.bingoroyale.BingoRoyaleMinigame;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -19,10 +20,9 @@ public class StartGameCommand implements CommandExecutor {
             return false;
         }
         if (!sender.isOp()) {
-            sender.sendMessage("Foei, jij mag dat niet");
+            sender.sendMessage("You're not allowed to do that");
             return true;
         }
-        sender.sendMessage("We gaan beginnen!");
         bingoRoyaleMinigame.startGame();
         return true;
     }
