@@ -2,13 +2,14 @@ package ooo.sansk.bingoroyale.objective;
 
 import ooo.sansk.bingoroyale.objective.factory.*;
 
-public enum  ObjectiveType {
+public enum ObjectiveType {
 
     BREED(new BreedAnimalObjectiveFactory()),
     CRAFT(new CraftItemObjectiveFactory()),
     KILL(new KillEntityTypeObjectiveFactory()),
     PORTAL(new NetherPortalEnterObjectiveFactory()),
-    SLEEP(new SleepInBedObjectiveFactory());
+    SLEEP(new SleepInBedObjectiveFactory()),
+    KILL_PLAYER(new KillPlayerObjectiveFactory());
 
     private final ObjectiveFactory factory;
 
