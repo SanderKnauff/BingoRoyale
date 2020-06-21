@@ -3,10 +3,14 @@ package ooo.sansk.bingoroyale;
 import org.bukkit.*;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
+import org.bukkit.event.player.PlayerRespawnEvent;
 import org.bukkit.event.player.PlayerTeleportEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.plugin.Plugin;
+import org.bukkit.scoreboard.DisplaySlot;
+import org.bukkit.scoreboard.RenderType;
+import org.bukkit.scoreboard.Scoreboard;
 
 import java.io.File;
 import java.io.IOException;
@@ -16,14 +20,12 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.attribute.BasicFileAttributes;
 import java.time.Instant;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
 
 public class BingoRoyaleMinigame {
 
     public static final String WORLD_NAME = "BingoWorld";
+
     private static final int ITEMS_PER_LINE = 5;
     private static final int WORLD_SIZE = 1000;
 
@@ -52,6 +54,8 @@ public class BingoRoyaleMinigame {
 
     public void startGame() {
         this.gameActive = true;
+        world.setGameRule(GameRule.DO_MOB_SPAWNING, true);
+        world.setGameRule(GameRule.DO_DAYLIGHT_CYCLE, true);
         List<Player> playerList = new ArrayList<>(Bukkit.getOnlinePlayers());
         for (int i = 0; i < playerList.size(); i++) {
             spawnPlayerInArena(playerList.get(i), i);
@@ -65,23 +69,33 @@ public class BingoRoyaleMinigame {
         player.setGameMode(GameMode.SURVIVAL);
         BingoCard bingoCard = createBingoCard(player, seed);
         bingoCards.add(bingoCard);
-        player.sendMessage("Complete the following objectives:");
         bingoCard.displayCard(player);
+        givePlayerBingoCardItem(player);
+        player.playSound(player.getLocation(), Sound.ENTITY_WITHER_SPAWN, 0.5f, 2f);
+    }
+
+    private void givePlayerBingoCardItem(Player player) {
         ItemStack card = new ItemStack(Material.PAPER, 1);
         ItemMeta itemMeta = card.getItemMeta();
         itemMeta.setDisplayName("" + ChatColor.RESET + ChatColor.GOLD + "Bingo Card");
         itemMeta.setLore(Collections.singletonList("" + ChatColor.BOLD + ChatColor.RED + "Right-click me to open your card!"));
         card.setItemMeta(itemMeta);
         player.getInventory().addItem(card);
+        player.getInventory().addItem(new ItemStack(Material.OAK_BOAT, 1));
     }
 
     public void stopGame() {
-        bingoCards.clear();
-        Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, Bukkit::shutdown, 200);
+        Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, () -> {
+            plugin.getLogger().info("Stopping server");
+            Bukkit.shutdown();
+        }, 300);
     }
 
     public void openCard(Player player) {
         for (BingoCard bingoCard : bingoCards) {
+            if (bingoCard.getOwner() == null) {
+                continue;
+            }
             if(bingoCard.getOwner().equals(player)) {
                 bingoCard.displayCard(player);
                 return;
@@ -91,11 +105,28 @@ public class BingoRoyaleMinigame {
 
     public void handleEvent(Event event) {
         for (BingoCard bingoCard : bingoCards) {
-            if (bingoCard.checkObjectiveCompleted(event) && bingoCard.checkCompletion()) {
-                Bukkit.getOnlinePlayers().forEach(player -> {
-                    player.sendTitle(ChatColor.AQUA + bingoCard.getOwner().getName() + ChatColor.GOLD + " has completed their card!", "", 10, 210, 20);
-                });
-                stopGame();
+            if (bingoCard.getOwner() == null) {
+                continue;
+            }
+            if (bingoCard.checkObjectiveCompleted(event))
+                if (bingoCard.checkCompletion()) {
+                    Bukkit.getOnlinePlayers().forEach(player -> {
+                        player.sendTitle(ChatColor.AQUA + bingoCard.getOwner().getName() + ChatColor.GOLD + " has completed their card!", "Server will restart in 15 seconds", 10, 400, 20);
+                        player.playSound(player.getLocation(), Sound.ENTITY_ENDER_DRAGON_DEATH, 0.5f, 1.0f);
+                    });
+                    stopGame();
+                    return;
+                }
+        }
+    }
+
+    public void handlePlayerDeath(Player player) {
+        for (BingoCard bingoCard : bingoCards) {
+            if (bingoCard.getOwner() == null) {
+                continue;
+            }
+            if(bingoCard.getOwner().equals(player)) {
+                bingoCard.unCompleteRandomObjective();
                 return;
             }
         }
@@ -129,16 +160,19 @@ public class BingoRoyaleMinigame {
     }
 
     public void setupGameRules() {
+        this.world.setDifficulty(Difficulty.HARD);
         this.world.setGameRule(GameRule.ANNOUNCE_ADVANCEMENTS, false);
         this.world.setGameRule(GameRule.DISABLE_RAIDS, true);
-        this.world.setGameRule(GameRule.DO_FIRE_TICK, false);
+        this.world.setGameRule(GameRule.DO_FIRE_TICK, true);
         this.world.setGameRule(GameRule.DO_IMMEDIATE_RESPAWN, true);
         this.world.setGameRule(GameRule.KEEP_INVENTORY, true);
-        this.world.setGameRule(GameRule.DO_INSOMNIA, false);
         this.world.setGameRule(GameRule.DO_TRADER_SPAWNING, false);
         this.world.setGameRule(GameRule.REDUCED_DEBUG_INFO, true);
         this.world.setGameRule(GameRule.SPECTATORS_GENERATE_CHUNKS, false);
         this.world.setGameRule(GameRule.DO_WEATHER_CYCLE, false);
+        //Disable until game starts
+        this.world.setGameRule(GameRule.DO_DAYLIGHT_CYCLE, false);
+        this.world.setGameRule(GameRule.DO_MOB_SPAWNING, false);
     }
 
     public void removeWorld() {
@@ -180,4 +214,13 @@ public class BingoRoyaleMinigame {
     }
 
 
+    public void handlePlayerRespawn(PlayerRespawnEvent e) {
+        if(!gameActive) {
+            return;
+        }
+        if(!e.isBedSpawn()) {
+            e.setRespawnLocation(calculateSpawnLocationInCircle(new Random().nextInt(10_000), 10_000));
+        }
+        givePlayerBingoCardItem(e.getPlayer());
+    }
 }

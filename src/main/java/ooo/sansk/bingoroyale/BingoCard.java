@@ -19,7 +19,7 @@ public class BingoCard {
 
     private final UUID owner;
     private final BingoObjective<Event>[][] table;
-    private final Stack<Integer> insertionOrder;
+//    private final Stack<Integer> insertionOrder;
 
     public BingoCard(Player owner, int itemsPerLine) {
         if (itemsPerLine != 1 && itemsPerLine != 3 && itemsPerLine != 5) {
@@ -27,23 +27,25 @@ public class BingoCard {
         }
         this.owner = owner.getUniqueId();
         this.table = new BingoObjective[itemsPerLine][itemsPerLine];
-        this.insertionOrder = IntStream.range(0, itemsPerLine * itemsPerLine).boxed().collect(Collectors.toCollection(Stack::new));
-        Collections.shuffle(this.insertionOrder);
+/*        this.insertionOrder = IntStream.range(0, itemsPerLine * itemsPerLine).boxed().collect(Collectors.toCollection(Stack::new));
+        Collections.shuffle(this.insertionOrder);*/
     }
 
     public void fillTable(long seed) {
         Random random = new Random(seed);
-        for (int i = 0; i < table.length * table.length; i++) {
-            int position = insertionOrder.pop();
-            int tableX = position / table.length;
-            int tableY = position % table.length;
-            BingoObjective<Event> bingoObjective;
-            do {
-                bingoObjective = ObjectiveType.values()[random.nextInt(ObjectiveType.values().length)]
-                        .getFactory()
-                        .generateObjective(getOwner(), random);
-            } while (tableContains(bingoObjective));
-            table[tableX][tableY] = bingoObjective;
+        for (int i = 0; i < table.length; i++) {
+            for (int j = 0; j < table.length; j++) {
+                BingoObjective<Event> bingoObjective;
+                do {
+                    bingoObjective = ObjectiveType.values()[random.nextInt(ObjectiveType.values().length)]
+                            .getFactory()
+                            .generateObjective(getOwner(), random);
+                } while (tableContains(bingoObjective));
+                table[i][j] = bingoObjective;
+            }
+//            int position = insertionOrder.pop();
+//            int tableX = position / table.length;
+//            int tableY = position % table.length;
         }
     }
 
@@ -109,11 +111,11 @@ public class BingoCard {
     }
 
     public boolean checkCompletion() {
-        boolean columnDone = true;
-        boolean rowDone = true;
-        boolean topLeftBottomRightDone = true;
-        boolean bottomLeftTopRightDone = true;
         for (int i = 0; i < table.length; i++) {
+            boolean columnDone = true;
+            boolean rowDone = true;
+            boolean topLeftBottomRightDone = true;
+            boolean bottomLeftTopRightDone = true;
             for (int j = 0; j < table.length; j++) {
                 columnDone = columnDone && table[i][j].isCompleted();
                 rowDone = rowDone && table[j][i].isCompleted();

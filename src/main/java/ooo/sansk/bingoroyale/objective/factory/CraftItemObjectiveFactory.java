@@ -11,6 +11,7 @@ public class CraftItemObjectiveFactory implements ObjectiveFactory<CraftItemObje
 
     private static Tuple<Material, Integer>[] ALLOWED_ITEMS = new Tuple[] {
             new Tuple<>(Material.DIAMOND_HOE, 1),
+            new Tuple<>(Material.ENCHANTING_TABLE, 1),
             new Tuple<>(Material.GOLDEN_APPLE, 1),
             new Tuple<>(Material.ANVIL, 1),
             new Tuple<>(Material.BEETROOT_SOUP, 3),

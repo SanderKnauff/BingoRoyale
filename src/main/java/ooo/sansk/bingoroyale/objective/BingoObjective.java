@@ -3,13 +3,13 @@ package ooo.sansk.bingoroyale.objective;
 import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.ChatMessageType;
 import net.md_5.bungee.api.chat.TextComponent;
-import org.bukkit.Bukkit;
-import org.bukkit.Material;
-import org.bukkit.Sound;
+import org.bukkit.*;
+import org.bukkit.entity.Firework;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.FireworkMeta;
 import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.Collections;
@@ -46,6 +46,17 @@ public abstract class BingoObjective<T extends Event> {
     private void notifyCompletion() {
         getPlayer().playSound(getPlayer().getLocation(), Sound.UI_TOAST_CHALLENGE_COMPLETE, 0.5f, 1.5f);
         getPlayer().sendTitle(ChatColor.GOLD + "Objective Complete!", getDescription(), 10, 70, 20);
+        getPlayer().getWorld().spawn(getPlayer().getLocation(), Firework.class, firework -> {
+            FireworkMeta fireworkMeta = firework.getFireworkMeta();
+            fireworkMeta.setPower(3);
+            fireworkMeta.addEffects(
+                    FireworkEffect.builder().with(FireworkEffect.Type.BALL_LARGE).withColor(Color.RED).build(),
+                    FireworkEffect.builder().with(FireworkEffect.Type.BALL_LARGE).withColor(Color.GREEN).build(),
+                    FireworkEffect.builder().with(FireworkEffect.Type.BALL_LARGE).withColor(Color.BLUE).build(),
+                    FireworkEffect.builder().with(FireworkEffect.Type.BALL_LARGE).withColor(Color.YELLOW).build()
+            );
+            firework.setFireworkMeta(fireworkMeta);
+        });
         for (Player onlinePlayer : Bukkit.getServer().getOnlinePlayers()) {
             onlinePlayer.spigot().sendMessage(ChatMessageType.ACTION_BAR, TextComponent.fromLegacyText(ChatColor.AQUA + getPlayer().getName() + ChatColor.GOLD + " has completed the objective " + ChatColor.BOLD + ChatColor.GREEN + getName()));
         }

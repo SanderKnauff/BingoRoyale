@@ -9,7 +9,12 @@ public enum ObjectiveType {
     KILL(new KillEntityTypeObjectiveFactory()),
     PORTAL(new NetherPortalEnterObjectiveFactory()),
     SLEEP(new SleepInBedObjectiveFactory()),
-    KILL_PLAYER(new KillPlayerObjectiveFactory());
+    KILL_PLAYER(new KillPlayerObjectiveFactory()),
+    EXPERIENCE(new GainLevelObjectiveFactory()),
+    CATCH_FISH(new CatchFishObjectiveFactory());
+    //Build golems
+    //Shear a snow golem
+    //Tame a horse
 
     private final ObjectiveFactory factory;
 

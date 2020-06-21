@@ -1,6 +1,7 @@
 package ooo.sansk.bingoroyale.objective.implementation;
 
 import ooo.sansk.bingoroyale.objective.BingoObjective;
+import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.entity.PlayerDeathEvent;
@@ -18,7 +19,7 @@ public class KillPlayerObjective extends BingoObjective<PlayerDeathEvent> {
 
     @Override
     public void checkCompleted(PlayerDeathEvent event) {
-        if (getPlayer().equals(event.getEntity().getKiller())) {
+        if (!getPlayer().equals(event.getEntity().getKiller())) {
             return;
         }
         setCompleted(true);
@@ -26,7 +27,7 @@ public class KillPlayerObjective extends BingoObjective<PlayerDeathEvent> {
 
     @Override
     public String getDescription() {
-        return "Kill another player";
+        return ChatColor.GRAY  + "Kill another " + ChatColor.RED +"player";
     }
 
     @Override
