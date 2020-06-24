@@ -20,7 +20,7 @@ public class CraftItemObjectiveFactory implements ObjectiveFactory<CraftItemObje
             new Tuple<>(Material.ANVIL, 1),
             new Tuple<>(Material.BEETROOT_SOUP, 3),
             new Tuple<>(Material.PUMPKIN_PIE, 3),
-            new Tuple<>(Material.TNT, 5),
+            new Tuple<>(Material.TNT, 2),
             new Tuple<>(Material.BOOKSHELF, 3),
             new Tuple<>(Material.STONE_PICKAXE, 27),
             new Tuple<>(Material.STICK, 1024)
