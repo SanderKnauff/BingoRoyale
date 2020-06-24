@@ -37,7 +37,7 @@ public enum ObjectiveType {
         this.factory = factory;
     }
 
-    public ObjectiveFactory getFactory(MapCanvas a) {
+    public ObjectiveFactory getFactory() {
         return factory;
     }
 }
