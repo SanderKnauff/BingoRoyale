@@ -10,6 +10,8 @@ import java.util.Random;
 public class CraftItemObjectiveFactory implements ObjectiveFactory<CraftItemObjective> {
 
     private static Tuple<Material, Integer>[] ALLOWED_ITEMS = new Tuple[] {
+            new Tuple<>(Material.CAKE, 1),
+            new Tuple<>(Material.RABBIT_STEW, 1),
             new Tuple<>(Material.DIAMOND_HOE, 1),
             new Tuple<>(Material.ENCHANTING_TABLE, 1),
             new Tuple<>(Material.GOLDEN_APPLE, 1),

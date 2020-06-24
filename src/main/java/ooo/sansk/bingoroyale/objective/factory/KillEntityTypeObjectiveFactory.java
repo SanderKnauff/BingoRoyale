@@ -10,7 +10,6 @@ import java.util.Random;
 public class KillEntityTypeObjectiveFactory implements ObjectiveFactory<KillEntityTypeObjective> {
 
     private static Tuple<EntityType, Integer>[] ALLOWED_TYPES = new Tuple[] {
-            new Tuple<>(EntityType.PHANTOM, 1),
             new Tuple<>(EntityType.BAT, 1),
             new Tuple<>(EntityType.WITCH, 3),
             new Tuple<>(EntityType.WOLF, 5),
