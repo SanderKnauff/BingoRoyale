@@ -9,7 +9,7 @@ import org.bukkit.event.entity.EntityBreedEvent;
 
 import java.util.Objects;
 
-public class BreedAnimalObjective extends BingoObjective<EntityBreedEvent> {
+public class BreedAnimalObjective extends BingoObjective {
 
     private final EntityType entityType;
 
@@ -19,16 +19,17 @@ public class BreedAnimalObjective extends BingoObjective<EntityBreedEvent> {
     }
 
     @Override
-    public Class<EntityBreedEvent> getListenerType() {
-        return EntityBreedEvent.class;
+    public boolean listensFor(Object event) {
+        return event instanceof EntityBreedEvent;
     }
 
     @Override
-    public void checkCompleted(EntityBreedEvent event) {
-        if(!entityType.equals(event.getEntityType())) {
+    public void checkCompleted(Object event) {
+        EntityBreedEvent entityBreedEvent = (EntityBreedEvent) event;
+        if(!entityType.equals(entityBreedEvent.getEntityType())) {
             return;
         }
-        if (!getPlayer().equals(event.getBreeder())) {
+        if (!getPlayer().equals(entityBreedEvent.getBreeder())) {
             return;
         }
         setCompleted(true);

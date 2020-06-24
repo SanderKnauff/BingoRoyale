@@ -6,20 +6,21 @@ import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.entity.PlayerDeathEvent;
 
-public class KillPlayerObjective extends BingoObjective<PlayerDeathEvent> {
+public class KillPlayerObjective extends BingoObjective {
 
     public KillPlayerObjective(Player player) {
         super(player, Material.IRON_SWORD);
     }
 
     @Override
-    public Class<PlayerDeathEvent> getListenerType() {
-        return PlayerDeathEvent.class;
+    public boolean listensFor(Object event) {
+        return event instanceof PlayerDeathEvent;
     }
 
     @Override
-    public void checkCompleted(PlayerDeathEvent event) {
-        if (!getPlayer().equals(event.getEntity().getKiller())) {
+    public void checkCompleted(Object event) {
+        PlayerDeathEvent playerDeathEvent = (PlayerDeathEvent) event;
+        if (!getPlayer().equals(playerDeathEvent.getEntity().getKiller())) {
             return;
         }
         setCompleted(true);

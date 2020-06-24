@@ -3,7 +3,6 @@ package ooo.sansk.bingoroyale.objective.implementation;
 import net.md_5.bungee.api.ChatMessageType;
 import net.md_5.bungee.api.chat.TextComponent;
 import ooo.sansk.bingoroyale.objective.BingoObjective;
-import ooo.sansk.bingoroyale.util.TextFormatter;
 import org.bukkit.Material;
 import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
@@ -13,7 +12,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 
-public class CatchFishObjective extends BingoObjective<PlayerFishEvent> {
+public class CatchFishObjective extends BingoObjective {
 
     private static final List<Material> FISH_TYPES = Arrays.asList(
             Material.PUFFERFISH,
@@ -32,23 +31,21 @@ public class CatchFishObjective extends BingoObjective<PlayerFishEvent> {
     }
 
     @Override
-    public Class<PlayerFishEvent> getListenerType() {
-        return PlayerFishEvent.class;
+    public boolean listensFor(Object event) {
+        return event instanceof PlayerFishEvent;
     }
 
     @Override
-    public void checkCompleted(PlayerFishEvent event) {
-        if(!event.getPlayer().equals(getPlayer())) {
-            System.out.println("Fisher was not the player");
+    public void checkCompleted(Object event) {
+        PlayerFishEvent playerFishEvent = (PlayerFishEvent) event;
+        if(!playerFishEvent.getPlayer().equals(getPlayer())) {
             return;
         }
-        if (!(event.getCaught() instanceof Item)) {
-            System.out.println("Hooked thing was not an item");
+        if (!(playerFishEvent.getCaught() instanceof Item)) {
             return;
         }
-        Item item = (Item) event.getCaught();
+        Item item = (Item) playerFishEvent.getCaught();
         if(!FISH_TYPES.contains(item.getItemStack().getType())) {
-            System.out.println("Fish types does not contain: " + item.getItemStack().getType());
             return;
         }
         this.count++;

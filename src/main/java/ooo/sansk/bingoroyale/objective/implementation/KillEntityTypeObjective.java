@@ -11,7 +11,7 @@ import org.bukkit.event.entity.EntityDeathEvent;
 
 import java.util.Objects;
 
-public class KillEntityTypeObjective extends BingoObjective<EntityDeathEvent> {
+public class KillEntityTypeObjective extends BingoObjective {
 
     private final EntityType entityType;
     private final int amountRequired;
@@ -25,8 +25,8 @@ public class KillEntityTypeObjective extends BingoObjective<EntityDeathEvent> {
     }
 
     @Override
-    public Class<EntityDeathEvent> getListenerType() {
-        return EntityDeathEvent.class;
+    public boolean listensFor(Object event) {
+        return event instanceof EntityDeathEvent;
     }
 
     @Override
@@ -38,11 +38,12 @@ public class KillEntityTypeObjective extends BingoObjective<EntityDeathEvent> {
     }
 
     @Override
-    public void checkCompleted(EntityDeathEvent event) {
-        if(!entityType.equals(event.getEntityType())) {
+    public void checkCompleted(Object event) {
+        EntityDeathEvent entityDeathEvent = (EntityDeathEvent) event;
+        if(!entityType.equals(entityDeathEvent.getEntityType())) {
             return;
         }
-        if (!getPlayer().equals(event.getEntity().getKiller())){
+        if (!getPlayer().equals(entityDeathEvent.getEntity().getKiller())){
             return;
         }
         this.count++;

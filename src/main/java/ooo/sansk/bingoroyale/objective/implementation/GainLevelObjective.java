@@ -5,23 +5,24 @@ import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.player.PlayerLevelChangeEvent;
 
-public class GainLevelObjective extends BingoObjective<PlayerLevelChangeEvent> {
+public class GainLevelObjective extends BingoObjective {
 
     public GainLevelObjective(Player player) {
         super(player, Material.EXPERIENCE_BOTTLE);
     }
 
     @Override
-    public Class<PlayerLevelChangeEvent> getListenerType() {
-        return PlayerLevelChangeEvent.class;
+    public boolean listensFor(Object event) {
+        return event instanceof PlayerLevelChangeEvent;
     }
 
     @Override
-    public void checkCompleted(PlayerLevelChangeEvent event) {
-        if (!event.getPlayer().equals(getPlayer())) {
+    public void checkCompleted(Object event) {
+        PlayerLevelChangeEvent playerLevelChangeEvent = (PlayerLevelChangeEvent) event;
+        if (!playerLevelChangeEvent.getPlayer().equals(getPlayer())) {
             return;
         }
-        if(event.getNewLevel() < 20) {
+        if(playerLevelChangeEvent.getNewLevel() < 20) {
             return;
         }
         setCompleted(true);

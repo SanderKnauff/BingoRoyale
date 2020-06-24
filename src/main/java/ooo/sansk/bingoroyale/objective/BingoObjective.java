@@ -16,7 +16,7 @@ import java.util.Collections;
 import java.util.Objects;
 import java.util.UUID;
 
-public abstract class BingoObjective<T extends Event> {
+public abstract class BingoObjective {
 
     private final UUID player;
     private final Material icon;
@@ -62,9 +62,9 @@ public abstract class BingoObjective<T extends Event> {
         }
     }
 
-    public abstract Class<T> getListenerType();
+    public abstract boolean listensFor(Object event);
 
-    public abstract void checkCompleted(T event);
+    public abstract void checkCompleted(Object event);
 
     public abstract String getDescription();
 
@@ -86,7 +86,7 @@ public abstract class BingoObjective<T extends Event> {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        BingoObjective<?> that = (BingoObjective<?>) o;
+        BingoObjective that = (BingoObjective) o;
         return player.equals(that.player);
     }
 

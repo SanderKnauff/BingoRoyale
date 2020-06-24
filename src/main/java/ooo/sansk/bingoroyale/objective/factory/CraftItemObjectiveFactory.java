@@ -5,11 +5,13 @@ import ooo.sansk.bingoroyale.util.Tuple;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 
+import java.util.Arrays;
+import java.util.List;
 import java.util.Random;
 
 public class CraftItemObjectiveFactory implements ObjectiveFactory<CraftItemObjective> {
 
-    private static Tuple<Material, Integer>[] ALLOWED_ITEMS = new Tuple[] {
+    private static List<Tuple<Material, Integer>> ALLOWED_ITEMS = Arrays.asList(
             new Tuple<>(Material.CAKE, 1),
             new Tuple<>(Material.RABBIT_STEW, 1),
             new Tuple<>(Material.DIAMOND_HOE, 1),
@@ -21,12 +23,12 @@ public class CraftItemObjectiveFactory implements ObjectiveFactory<CraftItemObje
             new Tuple<>(Material.TNT, 5),
             new Tuple<>(Material.BOOKSHELF, 3),
             new Tuple<>(Material.STONE_PICKAXE, 27),
-            new Tuple<>(Material.STICK, 1024),
-    };
+            new Tuple<>(Material.STICK, 1024)
+    );
 
     @Override
     public CraftItemObjective generateObjective(Player player, Random random) {
-        Tuple<Material, Integer> craftTarget = ALLOWED_ITEMS[random.nextInt(ALLOWED_ITEMS.length)];
+        Tuple<Material, Integer> craftTarget = ALLOWED_ITEMS.get(random.nextInt(ALLOWED_ITEMS.size()));
         return new CraftItemObjective(player, craftTarget.getX(), craftTarget.getY());
     }
 }

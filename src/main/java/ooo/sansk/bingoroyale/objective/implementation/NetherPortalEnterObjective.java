@@ -7,20 +7,21 @@ import org.bukkit.event.player.PlayerPortalEvent;
 
 import java.util.Objects;
 
-public class NetherPortalEnterObjective extends BingoObjective<PlayerPortalEvent> {
+public class NetherPortalEnterObjective extends BingoObjective {
 
     public NetherPortalEnterObjective(Player player) {
         super(player, Material.OBSIDIAN);
     }
 
     @Override
-    public Class<PlayerPortalEvent> getListenerType() {
-        return PlayerPortalEvent.class;
+    public boolean listensFor(Object event) {
+        return event instanceof PlayerPortalEvent;
     }
 
     @Override
-    public void checkCompleted(PlayerPortalEvent event) {
-        if (!getPlayer().equals(event.getPlayer())) {
+    public void checkCompleted(Object event) {
+        PlayerPortalEvent playerPortalEvent = (PlayerPortalEvent) event;
+        if (!getPlayer().equals(playerPortalEvent.getPlayer())) {
             return;
         }
         setCompleted(true);

@@ -8,7 +8,7 @@ import org.bukkit.event.player.PlayerBedEnterEvent;
 
 import java.util.Objects;
 
-public class SleepInBedObjective extends BingoObjective<PlayerBedEnterEvent> {
+public class SleepInBedObjective extends BingoObjective {
 
     private final Material bedType;
 
@@ -18,19 +18,20 @@ public class SleepInBedObjective extends BingoObjective<PlayerBedEnterEvent> {
     }
 
     @Override
-    public Class<PlayerBedEnterEvent> getListenerType() {
-        return PlayerBedEnterEvent.class;
+    public boolean listensFor(Object event) {
+        return event instanceof PlayerBedEnterEvent;
     }
 
     @Override
-    public void checkCompleted(PlayerBedEnterEvent event) {
-        if (!getPlayer().equals(event.getPlayer())) {
+    public void checkCompleted(Object event) {
+        PlayerBedEnterEvent playerBedEnterEvent = (PlayerBedEnterEvent) event;
+        if (!getPlayer().equals(playerBedEnterEvent.getPlayer())) {
             return;
         }
-        if(!event.getBedEnterResult().equals(PlayerBedEnterEvent.BedEnterResult.OK)) {
+        if(!playerBedEnterEvent.getBedEnterResult().equals(PlayerBedEnterEvent.BedEnterResult.OK)) {
             return;
         }
-        if (bedType != null && !bedType.equals(event.getBed().getType())) {
+        if (bedType != null && !bedType.equals(playerBedEnterEvent.getBed().getType())) {
             return;
         }
         setCompleted(true);

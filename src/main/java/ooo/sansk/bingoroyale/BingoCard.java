@@ -12,14 +12,11 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.*;
-import java.util.stream.Collectors;
-import java.util.stream.IntStream;
 
 public class BingoCard {
 
     private final UUID owner;
-    private final BingoObjective<Event>[][] table;
-//    private final Stack<Integer> insertionOrder;
+    private final BingoObjective[][] table;
 
     public BingoCard(Player owner, int itemsPerLine) {
         if (itemsPerLine != 1 && itemsPerLine != 3 && itemsPerLine != 5) {
@@ -27,15 +24,13 @@ public class BingoCard {
         }
         this.owner = owner.getUniqueId();
         this.table = new BingoObjective[itemsPerLine][itemsPerLine];
-/*        this.insertionOrder = IntStream.range(0, itemsPerLine * itemsPerLine).boxed().collect(Collectors.toCollection(Stack::new));
-        Collections.shuffle(this.insertionOrder);*/
     }
 
     public void fillTable(long seed) {
         Random random = new Random(seed);
         for (int i = 0; i < table.length; i++) {
             for (int j = 0; j < table.length; j++) {
-                BingoObjective<Event> bingoObjective;
+                BingoObjective bingoObjective;
                 do {
                     bingoObjective = ObjectiveType.values()[random.nextInt(ObjectiveType.values().length)]
                             .getFactory()
@@ -43,9 +38,6 @@ public class BingoCard {
                 } while (tableContains(bingoObjective));
                 table[i][j] = bingoObjective;
             }
-//            int position = insertionOrder.pop();
-//            int tableX = position / table.length;
-//            int tableY = position % table.length;
         }
     }
 
@@ -53,7 +45,7 @@ public class BingoCard {
         List<Tuple<Integer, Integer>> completedObjectives = new ArrayList<>();
         for (int i = 0; i < table.length; i++) {
             for (int j = 0; j < table.length; j++) {
-                BingoObjective<Event> bingoObjective = table[i][j];
+                BingoObjective bingoObjective = table[i][j];
                 if (bingoObjective.isCompleted()) {
                     completedObjectives.add(new Tuple<>(i, j));
                 }
@@ -64,16 +56,16 @@ public class BingoCard {
             return;
         }
         Tuple<Integer, Integer> completedObjective = completedObjectives.get(new Random().nextInt(completedObjectives.size()));
-        BingoObjective<Event> eventBingoObjective = table[completedObjective.getX()][completedObjective.getY()];
+        BingoObjective eventBingoObjective = table[completedObjective.getX()][completedObjective.getY()];
         eventBingoObjective.setCompleted(false);
         getOwner().sendTitle(ChatColor.RED + "You died...", ChatColor.GRAY + "As punishment, you need to redo " + ChatColor.RED + eventBingoObjective.getName(), 10, 70, 20);
     }
 
     public boolean checkObjectiveCompleted(Event event) {
         boolean hasCompletedAny = false;
-        for (BingoObjective<Event>[] row : table) {
-            for (BingoObjective<Event> bingoObjective : row) {
-                if (!bingoObjective.isCompleted() && bingoObjective.getListenerType().isInstance(event)) {
+        for (BingoObjective[] row : table) {
+            for (BingoObjective bingoObjective : row) {
+                if (!bingoObjective.isCompleted() && bingoObjective.listensFor(event)) {
                     bingoObjective.checkCompleted(event);
                     if (bingoObjective.isCompleted()) {
                         hasCompletedAny = true;
@@ -130,8 +122,8 @@ public class BingoCard {
     }
 
     public boolean tableContains(BingoObjective objective) {
-        for (BingoObjective<?>[] bingoObjectives : table) {
-            for (BingoObjective<?> objectiveInTable : bingoObjectives) {
+        for (BingoObjective[] bingoObjectives : table) {
+            for (BingoObjective objectiveInTable : bingoObjectives) {
                 if (objective.equals(objectiveInTable)) {
                     return true;
                 }
@@ -140,7 +132,7 @@ public class BingoCard {
         return false;
     }
 
-    public BingoObjective<Event>[][] getTable() {
+    public BingoObjective[][] getTable() {
         return table;
     }
 

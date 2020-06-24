@@ -64,14 +64,16 @@ public class BingoRoyaleMinigame {
 
     public void spawnPlayerInArena(Player player, int i) {
         Location location = calculateSpawnLocationInCircle(i, Bukkit.getOnlinePlayers().size());
-        player.teleport(location, PlayerTeleportEvent.TeleportCause.PLUGIN);
-        plugin.getLogger().info(() -> "Teleported " + player.getName() + " to " + location);
-        player.setGameMode(GameMode.SURVIVAL);
         BingoCard bingoCard = createBingoCard(player, seed);
         bingoCards.add(bingoCard);
-        bingoCard.displayCard(player);
-        givePlayerBingoCardItem(player);
-        player.playSound(player.getLocation(), Sound.ENTITY_WITHER_SPAWN, 0.5f, 2f);
+        Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, () -> {
+            player.teleport(location, PlayerTeleportEvent.TeleportCause.PLUGIN);
+            player.setGameMode(GameMode.SURVIVAL);
+            player.playSound(player.getLocation(), Sound.ENTITY_WITHER_SPAWN, 0.5f, 2f);
+            givePlayerBingoCardItem(player);
+            bingoCard.displayCard(player);
+            plugin.getLogger().info(() -> "Teleported " + player.getName() + " to " + location);
+        }, 1L);
     }
 
     private void givePlayerBingoCardItem(Player player) {

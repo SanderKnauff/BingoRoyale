@@ -14,7 +14,7 @@ import org.bukkit.inventory.ItemStack;
 
 import java.util.Objects;
 
-public class CraftItemObjective extends BingoObjective<CraftItemEvent> {
+public class CraftItemObjective extends BingoObjective {
 
     private final Material itemType;
     private final int amountRequired;
@@ -28,19 +28,20 @@ public class CraftItemObjective extends BingoObjective<CraftItemEvent> {
     }
 
     @Override
-    public Class<CraftItemEvent> getListenerType() {
-        return CraftItemEvent.class;
+    public boolean listensFor(Object event) {
+        return event instanceof CraftItemEvent;
     }
 
     @Override
-    public void checkCompleted(CraftItemEvent event) {
-        if(!getPlayer().equals(event.getWhoClicked())) {
+    public void checkCompleted(Object event) {
+        CraftItemEvent craftItemEvent = (CraftItemEvent) event;
+        if(!getPlayer().equals(craftItemEvent.getWhoClicked())) {
             return;
         }
-        if (!this.itemType.equals(event.getRecipe().getResult().getType())) {
+        if (!this.itemType.equals(craftItemEvent.getRecipe().getResult().getType())) {
             return;
         }
-        this.count = Math.min(this.count + getAmountOfCraftedItems(event), amountRequired);
+        this.count = Math.min(this.count + getAmountOfCraftedItems(craftItemEvent), amountRequired);
         if (this.count >= this.amountRequired) {
             setCompleted(true);
         } else {
