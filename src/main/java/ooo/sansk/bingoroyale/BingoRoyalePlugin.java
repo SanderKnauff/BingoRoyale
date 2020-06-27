@@ -10,7 +10,7 @@ import org.bukkit.plugin.java.annotation.plugin.Plugin;
 
 import java.util.Objects;
 
-@Plugin(name = "bingoroyale", version = "${git.commit.id.abbrev}")
+@Plugin(name = "bingoroyale", version = "0.0.1-SNAPSHOT")
 @Commands(value = {
         @Command(name = "startgame"),
         @Command(name = "stopgame")

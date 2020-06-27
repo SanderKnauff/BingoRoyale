@@ -6,6 +6,7 @@ import org.bukkit.Material;
 import org.bukkit.entity.EntityType;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.block.BlockCookEvent;
 import org.bukkit.event.entity.*;
 import org.bukkit.event.inventory.CraftItemEvent;
 import org.bukkit.event.inventory.InventoryClickEvent;
@@ -141,13 +142,19 @@ public class BingoRoyaleListener implements Listener {
     }
 
     @EventHandler
-    public void onPlayerRightClick(PlayerInteractEvent e) {
+    public void onPlayerInteract(PlayerInteractEvent e) {
         if (!Objects.equals(e.getHand(), EquipmentSlot.HAND)) {
             return;
         }
         if (e.getItem() == null || !e.getItem().getType().equals(Material.PAPER)) {
-            return;
+            bingoRoyaleMinigame.handleEvent(e);
+        } else {
+            bingoRoyaleMinigame.openCard(e.getPlayer());
         }
-        bingoRoyaleMinigame.openCard(e.getPlayer());
+    }
+
+    @EventHandler
+    public void onBlockCook(BlockCookEvent e) {
+        bingoRoyaleMinigame.handleEvent(e);
     }
 }

@@ -1,7 +1,6 @@
 package ooo.sansk.bingoroyale.objective;
 
 import ooo.sansk.bingoroyale.objective.factory.*;
-import org.bukkit.map.MapCanvas;
 
 public enum ObjectiveType {
 
@@ -12,7 +11,8 @@ public enum ObjectiveType {
     SLEEP(new SleepInBedObjectiveFactory()),
     KILL_PLAYER(new KillPlayerObjectiveFactory()),
     EXPERIENCE(new GainLevelObjectiveFactory()),
-    CATCH_FISH(new CatchFishObjectiveFactory());
+    CATCH_FISH(new CatchFishObjectiveFactory()),
+    COOK_FOOD_ON_CAMPFIRE(new CampfireCookObjectiveFactory());
     //Build Golems
     //Shear a Snow Golem
     //Tame a horse
