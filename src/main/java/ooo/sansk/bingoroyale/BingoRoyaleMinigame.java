@@ -49,7 +49,7 @@ public class BingoRoyaleMinigame {
 
     public boolean isPlayerInGame(Player player) {
         return bingoCards.stream()
-                .anyMatch(card -> card.getOwner().equals(player));
+                .anyMatch(card -> card.getOwner() != null && card.getOwner().equals(player));
     }
 
     public void startGame() {
