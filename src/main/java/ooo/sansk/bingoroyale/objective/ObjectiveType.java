@@ -7,12 +7,13 @@ public enum ObjectiveType {
     BREED(new BreedAnimalObjectiveFactory()),
     CRAFT(new CraftItemObjectiveFactory()),
     KILL(new KillEntityTypeObjectiveFactory()),
-    PORTAL(new NetherPortalEnterObjectiveFactory()),
+//    PORTAL(new NetherPortalEnterObjectiveFactory()), Disabled, Event does not fire when nether has been turned off.
     SLEEP(new SleepInBedObjectiveFactory()),
     KILL_PLAYER(new KillPlayerObjectiveFactory()),
     EXPERIENCE(new GainLevelObjectiveFactory()),
     CATCH_FISH(new CatchFishObjectiveFactory()),
-    COOK_FOOD_ON_CAMPFIRE(new CampfireCookObjectiveFactory());
+    COOK_FOOD_ON_CAMPFIRE(new CampfireCookObjectiveFactory()),
+    SWIM_IN_LAVA(new SwimInLavaObjectiveFactory());
     //Build Golems
     //Shear a Snow Golem
     //Tame a horse
@@ -31,13 +32,13 @@ public enum ObjectiveType {
     //Collections of different items
 
 
-    private final ObjectiveFactory factory;
+    private final ObjectiveFactory<? extends BingoObjective> factory;
 
-    ObjectiveType(ObjectiveFactory factory) {
+    ObjectiveType(ObjectiveFactory<? extends BingoObjective> factory) {
         this.factory = factory;
     }
 
-    public ObjectiveFactory getFactory() {
+    public ObjectiveFactory<?> getFactory() {
         return factory;
     }
 }

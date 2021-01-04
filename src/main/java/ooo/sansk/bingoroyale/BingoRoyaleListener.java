@@ -120,6 +120,7 @@ public class BingoRoyaleListener implements Listener {
 
     @EventHandler
     public void onEntityDamageByEntityEvent(EntityDamageByEntityEvent e) {
+        bingoRoyaleMinigame.handleEvent(e);
         if (!e.getCause().equals(EntityDamageEvent.DamageCause.ENTITY_EXPLOSION)) {
             return;
         }
@@ -127,6 +128,11 @@ public class BingoRoyaleListener implements Listener {
             return;
         }
         e.setCancelled(true);
+    }
+
+    @EventHandler
+    public void onEntityDamageByBlockEvent(EntityDamageByBlockEvent e) {
+        bingoRoyaleMinigame.handleEvent(e);
     }
 
     @EventHandler

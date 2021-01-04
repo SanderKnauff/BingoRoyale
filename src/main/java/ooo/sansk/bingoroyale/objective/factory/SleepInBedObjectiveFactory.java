@@ -29,11 +29,7 @@ public class SleepInBedObjectiveFactory implements ObjectiveFactory<SleepInBedOb
 
     @Override
     public SleepInBedObjective generateObjective(Player player, Random random) {
-//        if(random.nextDouble() < 0.75) {
-//            return new SleepInBedObjective(player, null);
-//        } else {
-            return new SleepInBedObjective(player, ALLOWED_BED_TYPES[random.nextInt(ALLOWED_BED_TYPES.length)]);
-//        }
+        return new SleepInBedObjective(player, ALLOWED_BED_TYPES[random.nextInt(ALLOWED_BED_TYPES.length)]);
     }
 }
 

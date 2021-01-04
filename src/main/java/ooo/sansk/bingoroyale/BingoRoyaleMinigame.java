@@ -8,9 +8,6 @@ import org.bukkit.event.player.PlayerTeleportEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.plugin.Plugin;
-import org.bukkit.scoreboard.DisplaySlot;
-import org.bukkit.scoreboard.RenderType;
-import org.bukkit.scoreboard.Scoreboard;
 
 import java.io.File;
 import java.io.IOException;
