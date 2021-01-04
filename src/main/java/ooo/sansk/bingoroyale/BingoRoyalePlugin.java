@@ -12,8 +12,8 @@ import java.util.Objects;
 
 @Plugin(name = "bingoroyale", version = "0.0.1-SNAPSHOT")
 @Commands(value = {
-        @Command(name = "startgame"),
-        @Command(name = "stopgame")
+    @Command(name = "startgame"),
+    @Command(name = "stopgame")
 })
 @ApiVersion(ApiVersion.Target.v1_13)
 public class BingoRoyalePlugin extends JavaPlugin {

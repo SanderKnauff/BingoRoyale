@@ -41,6 +41,6 @@ public class SwimInLavaObjective extends BingoObjective {
 
     @Override
     public String getDescription() {
-        return "§7Take §cdamage §7 while being §ccovered head to toe §7in §cLava";
+        return "§7Take §cdamage §7while being §ccovered head to toe §7in §cLava";
     }
 }

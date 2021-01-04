@@ -53,8 +53,8 @@ public class KillEntityTypeObjective extends BingoObjective {
             return;
         }
         if (equipmentSlot != null && equippedMaterial != null
-                && getPlayer().getEquipment() != null
-                && !getPlayer().getEquipment().getItem(equipmentSlot).getType().equals(equippedMaterial)) {
+            && getPlayer().getEquipment() != null
+            && !getPlayer().getEquipment().getItem(equipmentSlot).getType().equals(equippedMaterial)) {
             return;
         }
         this.count++;
@@ -73,20 +73,20 @@ public class KillEntityTypeObjective extends BingoObjective {
     @Override
     public String getDescription() {
         StringBuilder stringBuilder = new StringBuilder().append(ChatColor.GRAY).append("Kill ")
-                .append(ChatColor.RED).append(this.amountRequired).append(" ")
-                .append(TextFormatter.enumNameToFancyString(this.entityType.name())).append(this.amountRequired == 1 ? "" : "s");
+            .append(ChatColor.RED).append(this.amountRequired).append(" ")
+            .append(TextFormatter.enumNameToFancyString(this.entityType.name())).append(this.amountRequired == 1 ? "" : "s");
         if (equipmentSlot != null && equippedMaterial != null) {
             String itemName = TextFormatter.enumNameToFancyString(equippedMaterial.name());
             stringBuilder.append(ChatColor.GRAY).append(" while having ").append(aOrAn(itemName)).append(" ")
-                    .append(ChatColor.RED).append(itemName)
-                    .append(ChatColor.GRAY).append(" ").append(inOrOn(equipmentSlot)).append(" your ")
-                    .append(ChatColor.RED).append(TextFormatter.capitalizeWord(equipmentSlot.name()));
+                .append(ChatColor.RED).append(itemName)
+                .append(ChatColor.GRAY).append(" ").append(inOrOn(equipmentSlot)).append(" your ")
+                .append(ChatColor.RED).append(TextFormatter.capitalizeWord(equipmentSlot.name()));
         }
-        if(this.amountRequired != 1) {
+        if (this.amountRequired != 1) {
             stringBuilder.append(" ").append(ChatColor.DARK_GRAY).append("(").append(isCompleted() ? ChatColor.GREEN : ChatColor.RED).append(this.count)
-                    .append(ChatColor.GRAY).append("/")
-                    .append(isCompleted() ? ChatColor.GREEN : ChatColor.RED).append(this.amountRequired)
-                    .append(ChatColor.DARK_GRAY).append(")");
+                .append(ChatColor.GRAY).append("/")
+                .append(isCompleted() ? ChatColor.GREEN : ChatColor.RED).append(this.amountRequired)
+                .append(ChatColor.DARK_GRAY).append(")");
         }
         return stringBuilder.toString();
     }
@@ -97,7 +97,7 @@ public class KillEntityTypeObjective extends BingoObjective {
         if (o == null || getClass() != o.getClass()) return false;
         KillEntityTypeObjective that = (KillEntityTypeObjective) o;
         return amountRequired == that.amountRequired &&
-                entityType == that.entityType;
+            entityType == that.entityType;
     }
 
     @Override
@@ -107,15 +107,15 @@ public class KillEntityTypeObjective extends BingoObjective {
 
     private String aOrAn(String word) {
         if (word.startsWith("a") ||
-                word.startsWith("A") ||
-                word.startsWith("e") ||
-                word.startsWith("E") ||
-                word.startsWith("i") ||
-                word.startsWith("I") ||
-                word.startsWith("o") ||
-                word.startsWith("O") ||
-                word.startsWith("u") ||
-                word.startsWith("U")
+            word.startsWith("A") ||
+            word.startsWith("e") ||
+            word.startsWith("E") ||
+            word.startsWith("i") ||
+            word.startsWith("I") ||
+            word.startsWith("o") ||
+            word.startsWith("O") ||
+            word.startsWith("u") ||
+            word.startsWith("U")
         ) {
             return "an";
         } else {

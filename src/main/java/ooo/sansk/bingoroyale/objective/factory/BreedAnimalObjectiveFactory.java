@@ -9,12 +9,12 @@ import java.util.Random;
 public class BreedAnimalObjectiveFactory implements ObjectiveFactory<BreedAnimalObjective> {
 
     private static final EntityType[] ALLOWED_TYPES = new EntityType[]{
-            EntityType.CHICKEN,
-            EntityType.PIG,
-            EntityType.COW,
-            EntityType.SHEEP,
-            EntityType.RABBIT,
-            EntityType.WOLF,
+        EntityType.CHICKEN,
+        EntityType.PIG,
+        EntityType.COW,
+        EntityType.SHEEP,
+        EntityType.RABBIT,
+        EntityType.WOLF,
 //            EntityType.CAT, //Disabled. may be very hard
 //            EntityType.OCELOT, //Disabled. may be very hard
 //            EntityType.HORSE, //Disabled. may be very hard

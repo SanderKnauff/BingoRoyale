@@ -7,7 +7,7 @@ import org.bukkit.entity.Player;
 public class PlayerUtil {
 
     public static void cleanPlayer(Player player, boolean clearInv) {
-        if(clearInv){
+        if (clearInv) {
             player.getInventory().clear();
             player.getEnderChest().clear();
         }

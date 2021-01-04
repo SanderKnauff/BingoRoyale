@@ -11,7 +11,10 @@ import org.bukkit.event.Event;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
+import java.util.UUID;
 
 public class BingoCard {
 
@@ -33,8 +36,8 @@ public class BingoCard {
                 BingoObjective bingoObjective;
                 do {
                     bingoObjective = ObjectiveType.values()[random.nextInt(ObjectiveType.values().length)]
-                            .getFactory()
-                            .generateObjective(getOwner(), random);
+                        .getFactory()
+                        .generateObjective(getOwner(), random);
                 } while (tableContains(bingoObjective));
                 table[i][j] = bingoObjective;
             }

@@ -28,7 +28,7 @@ public class KillPlayerObjective extends BingoObjective {
 
     @Override
     public String getDescription() {
-        return ChatColor.GRAY  + "Kill another " + ChatColor.RED +"player";
+        return ChatColor.GRAY + "Kill another " + ChatColor.RED + "player";
     }
 
     @Override

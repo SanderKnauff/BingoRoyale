@@ -22,7 +22,7 @@ public class GainLevelObjective extends BingoObjective {
         if (!playerLevelChangeEvent.getPlayer().equals(getPlayer())) {
             return;
         }
-        if(playerLevelChangeEvent.getNewLevel() < 20) {
+        if (playerLevelChangeEvent.getNewLevel() < 20) {
             return;
         }
         setCompleted(true);

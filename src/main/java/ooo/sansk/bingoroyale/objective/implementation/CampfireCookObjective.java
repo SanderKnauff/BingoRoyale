@@ -28,7 +28,7 @@ public class CampfireCookObjective extends BingoObjective {
             handlePlayerInteractEvent((PlayerInteractEvent) event);
         }
         if (event instanceof BlockCookEvent) {
-           handleBlockCookEvent((BlockCookEvent) event);
+            handleBlockCookEvent((BlockCookEvent) event);
         }
     }
 
@@ -43,10 +43,10 @@ public class CampfireCookObjective extends BingoObjective {
     }
 
     private void handleBlockCookEvent(BlockCookEvent event) {
-        if(!event.getBlock().getLocation().equals(this.location)) {
+        if (!event.getBlock().getLocation().equals(this.location)) {
             return;
         }
-        if(!(event.getBlock().getBlockData() instanceof Campfire) || !((Campfire) event.getBlock().getBlockData()).isSignalFire()) {
+        if (!(event.getBlock().getBlockData() instanceof Campfire) || !((Campfire) event.getBlock().getBlockData()).isSignalFire()) {
             return;
         }
         setCompleted(true);
@@ -55,7 +55,7 @@ public class CampfireCookObjective extends BingoObjective {
     @Override
     public void setCompleted(boolean completed) {
         super.setCompleted(completed);
-        if(!completed) {
+        if (!completed) {
             this.location = null;
         }
     }

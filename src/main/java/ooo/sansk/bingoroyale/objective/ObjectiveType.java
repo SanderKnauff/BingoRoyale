@@ -1,13 +1,22 @@
 package ooo.sansk.bingoroyale.objective;
 
-import ooo.sansk.bingoroyale.objective.factory.*;
+import ooo.sansk.bingoroyale.objective.factory.BreedAnimalObjectiveFactory;
+import ooo.sansk.bingoroyale.objective.factory.CampfireCookObjectiveFactory;
+import ooo.sansk.bingoroyale.objective.factory.CatchFishObjectiveFactory;
+import ooo.sansk.bingoroyale.objective.factory.CraftItemObjectiveFactory;
+import ooo.sansk.bingoroyale.objective.factory.GainLevelObjectiveFactory;
+import ooo.sansk.bingoroyale.objective.factory.KillEntityTypeObjectiveFactory;
+import ooo.sansk.bingoroyale.objective.factory.KillPlayerObjectiveFactory;
+import ooo.sansk.bingoroyale.objective.factory.ObjectiveFactory;
+import ooo.sansk.bingoroyale.objective.factory.SleepInBedObjectiveFactory;
+import ooo.sansk.bingoroyale.objective.factory.SwimInLavaObjectiveFactory;
 
 public enum ObjectiveType {
 
     BREED(new BreedAnimalObjectiveFactory()),
     CRAFT(new CraftItemObjectiveFactory()),
     KILL(new KillEntityTypeObjectiveFactory()),
-//    PORTAL(new NetherPortalEnterObjectiveFactory()), Disabled, Event does not fire when nether has been turned off.
+    //    PORTAL(new NetherPortalEnterObjectiveFactory()), Disabled, Event does not fire when nether has been turned off.
     SLEEP(new SleepInBedObjectiveFactory()),
     KILL_PLAYER(new KillPlayerObjectiveFactory()),
     EXPERIENCE(new GainLevelObjectiveFactory()),

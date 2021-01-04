@@ -1,6 +1,16 @@
 package ooo.sansk.bingoroyale;
 
-import org.bukkit.*;
+import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
+import org.bukkit.Difficulty;
+import org.bukkit.GameMode;
+import org.bukkit.GameRule;
+import org.bukkit.Location;
+import org.bukkit.Material;
+import org.bukkit.Sound;
+import org.bukkit.World;
+import org.bukkit.WorldBorder;
+import org.bukkit.WorldCreator;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
 import org.bukkit.event.player.PlayerRespawnEvent;
@@ -17,7 +27,11 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.attribute.BasicFileAttributes;
 import java.time.Instant;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Random;
 
 public class BingoRoyaleMinigame {
 
@@ -46,7 +60,7 @@ public class BingoRoyaleMinigame {
 
     public boolean isPlayerInGame(Player player) {
         return bingoCards.stream()
-                .anyMatch(card -> card.getOwner() != null && card.getOwner().equals(player));
+            .anyMatch(card -> card.getOwner() != null && card.getOwner().equals(player));
     }
 
     public void startGame() {
@@ -95,7 +109,7 @@ public class BingoRoyaleMinigame {
             if (bingoCard.getOwner() == null) {
                 continue;
             }
-            if(bingoCard.getOwner().equals(player)) {
+            if (bingoCard.getOwner().equals(player)) {
                 bingoCard.displayCard(player);
                 return;
             }
@@ -124,7 +138,7 @@ public class BingoRoyaleMinigame {
             if (bingoCard.getOwner() == null) {
                 continue;
             }
-            if(bingoCard.getOwner().equals(player)) {
+            if (bingoCard.getOwner().equals(player)) {
                 bingoCard.unCompleteRandomObjective();
                 return;
             }
@@ -145,7 +159,7 @@ public class BingoRoyaleMinigame {
 
     public World createWorld() {
         this.world = new WorldCreator(WORLD_NAME)
-                .createWorld();
+            .createWorld();
         setupWorldBorder();
         setupGameRules();
         return world;
@@ -177,7 +191,7 @@ public class BingoRoyaleMinigame {
     public void removeWorld() {
         if (world != null) {
             boolean worldUnloadSuccess = Bukkit.getServer().unloadWorld(world, false);
-            if(!worldUnloadSuccess) {
+            if (!worldUnloadSuccess) {
                 plugin.getLogger().warning("Failed to remove world");
             }
         }
@@ -214,10 +228,10 @@ public class BingoRoyaleMinigame {
 
 
     public void handlePlayerRespawn(PlayerRespawnEvent e) {
-        if(!gameActive) {
+        if (!gameActive) {
             return;
         }
-        if(!e.isBedSpawn()) {
+        if (!e.isBedSpawn()) {
             e.setRespawnLocation(calculateSpawnLocationInCircle(new Random().nextInt(10_000), 10_000));
         }
         givePlayerBingoCardItem(e.getPlayer());

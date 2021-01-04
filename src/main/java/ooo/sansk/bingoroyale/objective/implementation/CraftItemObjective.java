@@ -35,7 +35,7 @@ public class CraftItemObjective extends BingoObjective {
     @Override
     public void checkCompleted(Object event) {
         CraftItemEvent craftItemEvent = (CraftItemEvent) event;
-        if(!getPlayer().equals(craftItemEvent.getWhoClicked())) {
+        if (!getPlayer().equals(craftItemEvent.getWhoClicked())) {
             return;
         }
         if (!this.itemType.equals(craftItemEvent.getRecipe().getResult().getType())) {
@@ -52,7 +52,7 @@ public class CraftItemObjective extends BingoObjective {
     @Override
     public void setCompleted(boolean completed) {
         super.setCompleted(completed);
-        if(!completed) {
+        if (!completed) {
             this.count = 0;
         }
     }
@@ -65,13 +65,13 @@ public class CraftItemObjective extends BingoObjective {
     @Override
     public String getDescription() {
         return String.format("§7Craft §c%d %s%s §8(%s%d§7/%s%d§8)",
-                this.amountRequired,
-                TextFormatter.enumNameToFancyString(this.itemType.name()),
-                this.amountRequired == 1 ? "" : "s",
-                isCompleted() ? "§a" : "§c",
-                this.count,
-                isCompleted() ? "§a" : "§c",
-                this.amountRequired);
+            this.amountRequired,
+            TextFormatter.enumNameToFancyString(this.itemType.name()),
+            this.amountRequired == 1 ? "" : "s",
+            isCompleted() ? "§a" : "§c",
+            this.count,
+            isCompleted() ? "§a" : "§c",
+            this.amountRequired);
     }
 
     @Override
@@ -80,7 +80,7 @@ public class CraftItemObjective extends BingoObjective {
         if (o == null || getClass() != o.getClass()) return false;
         CraftItemObjective that = (CraftItemObjective) o;
         return amountRequired == that.amountRequired &&
-                itemType == that.itemType;
+            itemType == that.itemType;
     }
 
     @Override

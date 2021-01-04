@@ -26,7 +26,7 @@ public class BreedAnimalObjective extends BingoObjective {
     @Override
     public void checkCompleted(Object event) {
         EntityBreedEvent entityBreedEvent = (EntityBreedEvent) event;
-        if(!entityType.equals(entityBreedEvent.getEntityType())) {
+        if (!entityType.equals(entityBreedEvent.getEntityType())) {
             return;
         }
         if (!getPlayer().equals(entityBreedEvent.getBreeder())) {

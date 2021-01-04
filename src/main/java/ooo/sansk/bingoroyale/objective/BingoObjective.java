@@ -3,7 +3,11 @@ package ooo.sansk.bingoroyale.objective;
 import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.ChatMessageType;
 import net.md_5.bungee.api.chat.TextComponent;
-import org.bukkit.*;
+import org.bukkit.Bukkit;
+import org.bukkit.Color;
+import org.bukkit.FireworkEffect;
+import org.bukkit.Material;
+import org.bukkit.Sound;
 import org.bukkit.entity.Firework;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemFlag;
@@ -49,10 +53,10 @@ public abstract class BingoObjective {
             FireworkMeta fireworkMeta = firework.getFireworkMeta();
             fireworkMeta.setPower(3);
             fireworkMeta.addEffects(
-                    FireworkEffect.builder().with(FireworkEffect.Type.BALL_LARGE).withColor(Color.RED).build(),
-                    FireworkEffect.builder().with(FireworkEffect.Type.BALL_LARGE).withColor(Color.GREEN).build(),
-                    FireworkEffect.builder().with(FireworkEffect.Type.BALL_LARGE).withColor(Color.BLUE).build(),
-                    FireworkEffect.builder().with(FireworkEffect.Type.BALL_LARGE).withColor(Color.YELLOW).build()
+                FireworkEffect.builder().with(FireworkEffect.Type.BALL_LARGE).withColor(Color.RED).build(),
+                FireworkEffect.builder().with(FireworkEffect.Type.BALL_LARGE).withColor(Color.GREEN).build(),
+                FireworkEffect.builder().with(FireworkEffect.Type.BALL_LARGE).withColor(Color.BLUE).build(),
+                FireworkEffect.builder().with(FireworkEffect.Type.BALL_LARGE).withColor(Color.YELLOW).build()
             );
             firework.setFireworkMeta(fireworkMeta);
         });
@@ -72,7 +76,7 @@ public abstract class BingoObjective {
     public ItemStack getItemRepresentation() {
         ItemStack representation = new ItemStack(isCompleted() ? Material.LIME_WOOL : icon, 1);
         ItemMeta itemMeta = representation.getItemMeta();
-        if(itemMeta != null) {
+        if (itemMeta != null) {
             itemMeta.setDisplayName(ChatColor.GOLD + getName());
             itemMeta.setLore(Collections.singletonList((isCompleted() ? "§8[§aCOMPLETED§8] " : "") + getDescription()));
             itemMeta.addItemFlags(ItemFlag.HIDE_ATTRIBUTES);

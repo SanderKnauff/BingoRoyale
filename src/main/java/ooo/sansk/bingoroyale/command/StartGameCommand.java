@@ -16,7 +16,7 @@ public class StartGameCommand implements CommandExecutor {
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-        if(args.length > 0) {
+        if (args.length > 0) {
             return false;
         }
         if (!sender.isOp()) {

@@ -12,19 +12,19 @@ import java.util.Random;
 public class CraftItemObjectiveFactory implements ObjectiveFactory<CraftItemObjective> {
 
     private static final List<Tuple<Material, Integer>> ALLOWED_ITEMS = Arrays.asList(
-            new Tuple<>(Material.CAKE, 1),
-            new Tuple<>(Material.RABBIT_STEW, 1),
-            new Tuple<>(Material.DIAMOND_HOE, 1),
-            new Tuple<>(Material.ENCHANTING_TABLE, 1),
-            new Tuple<>(Material.GOLDEN_APPLE, 1),
-            new Tuple<>(Material.ANVIL, 1),
-            new Tuple<>(Material.TNT, 2),
-            new Tuple<>(Material.BEETROOT_SOUP, 3),
-            new Tuple<>(Material.PUMPKIN_PIE, 3),
-            new Tuple<>(Material.BOOKSHELF, 3),
-            new Tuple<>(Material.DISPENSER, 5),
-            new Tuple<>(Material.STONE_PICKAXE, 27),
-            new Tuple<>(Material.STICK, 1024)
+        new Tuple<>(Material.CAKE, 1),
+        new Tuple<>(Material.RABBIT_STEW, 1),
+        new Tuple<>(Material.DIAMOND_HOE, 1),
+        new Tuple<>(Material.ENCHANTING_TABLE, 1),
+        new Tuple<>(Material.GOLDEN_APPLE, 1),
+        new Tuple<>(Material.ANVIL, 1),
+        new Tuple<>(Material.TNT, 2),
+        new Tuple<>(Material.BEETROOT_SOUP, 3),
+        new Tuple<>(Material.PUMPKIN_PIE, 3),
+        new Tuple<>(Material.BOOKSHELF, 3),
+        new Tuple<>(Material.DISPENSER, 5),
+        new Tuple<>(Material.STONE_PICKAXE, 27),
+        new Tuple<>(Material.STICK, 1024)
     );
 
     @Override

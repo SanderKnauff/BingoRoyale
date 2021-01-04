@@ -11,6 +11,6 @@ public class TextFormatter {
 
     public static String capitalizeWord(String source) {
         String lowerCase = source.toLowerCase();
-        return lowerCase.substring(0 , 1).toUpperCase() + lowerCase.substring(1);
+        return lowerCase.substring(0, 1).toUpperCase() + lowerCase.substring(1);
     }
 }
